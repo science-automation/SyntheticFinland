@@ -37,9 +37,6 @@ steps:
 - checkout: synthea-international
   fetchDepth: 1
   clean: true
-- checkout: SyntheticFinland-storage
-  fetchDepth: 1
-  clean: true
 - checkout: ETL-Synthea-Python
   fetchDepth: 1
   clean: true
