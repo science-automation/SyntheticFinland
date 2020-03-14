@@ -40,7 +40,6 @@ for region in regions:
     # use real addresses
     os.chdir(basedir + '/s/fi_addresses')
     os.system("ls -al")
-    os.system("git lfs pull")
     os.chdir(basedir + '/s/ETL-Synthea-Python/python_etl')
     os.system("python real_address_synthea.py")
     # run synthea->omop
