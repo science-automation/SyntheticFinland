@@ -38,6 +38,8 @@ for region in regions:
     os.chdir(basedir + '/s/synthea/output/csv')
     os.system("gzip *")
     # use real addresses
+    os.chdir(basedir + '/s/fi_addresses')
+    os.system("ls -al")
     os.chdir(basedir + '/s/ETL-Synthea-Python/python_etl')
     os.system("python real_address_synthea.py")
     # run synthea->omop
