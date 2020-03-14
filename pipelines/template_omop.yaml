@@ -25,6 +25,10 @@ resources:
       type: git
       name: SyntheticFinland/SyntheticFinlandStorage
       lfs: true
+    - repository: fi_addresses
+      type: git
+      name: SyntheticFinland/fi_addresses
+      lfs: true
 
 trigger:
 - master
@@ -49,6 +53,9 @@ jobs:
       clean: true
     - checkout: SyntheticFinlandStorage
       persistCredentials: true
+    - checkout: fi_addresses
+      fetchDepth: 1
+      clean: true
     - script: |
         pip install pandas
         pip install python-dotenv
@@ -57,10 +64,6 @@ jobs:
         cd ${AGENT_BUILDDIRECTORY}/s/synthea
         # temp file some values in synthea.properties
         echo "exporter.encoding = UTF-8" >> ../synthea-international/fi/src/main/resources/synthea.properties
-        sed -i 's/exporter.fhir.export = false/exporter.fhir.export = true/g'../synthea-international/fi/src/main/resources/synthea.properties
-        sed -i 's/exporter.hospital.fhir.export = false/exporter.hospital.fhir.export = true/g' ../synthea-international/fi/src/main/resources/synthea.properties
-        sed -i 's/exporter.fhir.transaction_bundle = false/exporter.fhir.transaction_bundle = true/g' ../synthea-international/fi/src/main/resources/synthea.properties
-        sed -i 's/exporter.practitioner.fhir.export = false/exporter.practitioner.fhir.export = true/g' ../synthea-international/fi/src/main/resources/synthea.properties
         cp -R ../synthea-international/fi/* .
         ./gradlew build -x test
       displayName: 'Build Synthea for country'
@@ -69,6 +72,7 @@ jobs:
         echo "BASE_SYNTHEA_INPUT_DIRECTORY=${AGENT_BUILDDIRECTORY}/s/synthea/output/csv" > .env
         echo "BASE_OMOP_INPUT_DIRECTORY=${AGENT_BUILDDIRECTORY}/s/ETL-Synthea-Python/vocab/" >> .env
         echo "BASE_OUTPUT_DIRECTORY=${AGENT_BUILDDIRECTORY}/s/ETL-Synthea-Python/output" >> .env
+        echo "ADDRESS_FILE=${AGENT_BUILDDIRECTORY}/s/fi_addresses/fi.csv.gz" >> .env
         echo "CDM_VERSION=6" >> .env
         echo "INPUT_CHUNK_SIZE=100000" >> .env
         echo "COUNTER_FILE=.counter" >> .env
