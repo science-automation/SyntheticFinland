@@ -54,8 +54,6 @@ jobs:
     - checkout: SyntheticFinlandStorage
       persistCredentials: true
     - checkout: fi_addresses
-      fetchDepth: 1
-      clean: true
     - script: |
         pip install pandas
         pip install python-dotenv
